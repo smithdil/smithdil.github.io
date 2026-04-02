@@ -1,31 +1,160 @@
-<body>
-    <h1>The Brown Bear</h1>
-    <p>The brown bear (Ursus arctos) is native to parts of
-        northern Eurasia and North America. Its
-        conservation status is currently Least Concern.
-        There are many subspecies within the brown bear
-        species, including the Atlas bear and the Himalayan brown bear.</p>
-    <div id="introduction">
-        <h2>About the Brown Bear</h2>
-        <h3>Species</h3>
-        <h3>Features</h3>
-        <p>Brown bears are not always completely brown.
-            Some can be reddish or yellowish. They have very
-            large, curved claws and huge paws. Male brown
-            bears are often 30% larger than female brown
-            bears. They can range from 5 feet to 9 feet from
-            head to toe.</p>
-    </div>
-    <div id="habitat">
-        <h2>Habitat</h2>
-        <h3>Countries with large bear populations:</h3>
-        <h3>Countries with small bear populations:</h3>
-        <p>Some countries with smaller brown bear populations
-            include Armenia, Belarus, Bulgaria, China, Finland,
-            France, Greece, India, Japan, Nepal, Poland, Romania,
-            Slovenia, Turkmenistan, and Uzbekistan.</p>
-    </div>
-    <div id="media">
-        <h2>Media</h2>
-    </div>
-</body>
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Your one-stop destination for live NBA scores, team standings, players stats, and head-to-head comparisons. Updated every visit.">
+        <meta name="author" content="NBA Stats Hub">
+        <title>NBA Stats Hub - Live Scores, Stats & Comparisons</title>
+        <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Open+Sans:wght@400;600;700;&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+        <header>
+            <div class="header-container">
+                <div class="logo">
+                    <img src="https://cdn.nba.com/logos/leagues/logo-nba.svg" alt="NBA Stats Hub Logo" class="logo-img">
+                    <span class="logo-text">Stats Hub</span>
+                </div>
+                <button class="hamburger" id="hamburger" aria-label="Toggle navigation menu">&#9776</button>
+                <nav id="nav-menu">
+                    <ul class="nav-list">
+                        <li>
+                            <a href="index.html" class="nav-link active">Home</a>
+                        </li>
+                        <li>
+                            <a href="standings.html" class="nav-link">Standings</a>
+                        </li>
+                        <li>
+                            <a href="player.html" class="nav-link">Player Stats</a>
+                        </li>
+                        <li>
+                            <a href="compare.html" class="nav-link">Compare</a>
+                        </li>
+                        <li>
+                            <a href="contact.html" class="nav-link">Contact</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Your NBA Stats Headquarters</h1>
+                <p>Live scores, standings, and player stats - updated every time you visit.</p>
+                <a href="standings.html" class="hero-btn">View Standings</a>
+            </div>
+        </section>
+        <main>
+            <section class="section" id="scores-section">
+                <h2 class="section-title">Today's Scores</h2>
+                <p class="section-subtitle">Live and recent games from around the league.</p>
+                <div class="scores-container" id="scores-container">
+                    <p class="loading-msg">Loading scores...</p>
+                </div>
+            </section>
+            <section class="section" id="standings-section">
+                <h2 class="section-title">Conference Standings Snapshot</h2>
+                <p class="section-subtitle">Top 5 teams from each conference.</p>
+                <div class="standings-wrapper">
+                    <div class="standings-box">
+                        <h3>Eastern Conference</h3>
+                        <table class="standings-table">
+                            <thead>
+                                <tr>
+                                    <th>Rank</th>
+                                    <th>Team</th>
+                                    <th>Wins</th>
+                                    <th>Losses</th>
+                                </tr>
+                            </thead>
+                            <tbody id="east-standings">
+                                <tr>
+                                    <td colspan="4">Loading...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="standings-box">
+                        <h3>Western Conference</h3>
+                        <table class="standings-table">
+                            <thead>
+                                <tr>
+                                    <th>Rank</th>
+                                    <th>Team</th>
+                                    <th>Wins</th>
+                                    <th>Losses</th>
+                                </tr>
+                            </thead>
+                            <tbody id="west-standings">
+                                <tr>
+                                    <td colspan="4">Loading...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+            <section class="section" id="features-section">
+                <h2 class="section-title">What You Can Do Here</h2>
+                <ul class="features-list">
+                    <li>
+                        <strong>Live Scores</strong> - Check today's games and final scores, updated in real time.
+                    </li>
+                    <li>
+                        <strong>Full Standings</strong> - See every team's record, win percentage, and conference rank.
+                    </li>
+                    <li>
+                        <strong>Player Stats</strong> - Look up points, rebounds, assists, and more for any player.
+                    </li>
+                    <li>
+                        <strong>Compare Teams & Players</strong> - Put two teams or players side by side to see who's better.
+                    </li>
+                    <li>
+                        <strong>Contact Us</strong> - Have a suggestion or found a bug? Let us know!
+                    </li>
+                </ul>
+            </section>
+            <section class="section" id="signup-section">
+                <h2 class="section-title">Stay Updated</h2>
+                <p class="section-subtitle">Sign up to get daily NBA highlights in your inbox.</p>
+                <form id="signup-form" class="signup-form">
+                    <div class="form-group">
+                        <label for="user-name">Your Name:</label>
+                        <input type="text" id="user-name" name="user-name" placeholder="e.g. John Smith" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="user-email">Your Email:</label>
+                        <input type="email" id="user-email" name="user-email" placeholder="e.g. john@email.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="fav-team">Favorite Team:</label>
+                        <select id="fav-team" name="fav-team">
+                            <option value="">-- Select a team --</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="form-btn">Sign Up</button>
+                </form>
+                <div id="form-message" class="form-message"></div>
+            </section>
+        </main>
+        <footer>
+            <div class="footer-content">
+                <p>&copy; 2026 NBA Stats Hub. All rights reserved.</p>
+                <p>Data provided by ESPN. THis site is for educational purposes only.</p>
+                <ul class="footer-links">
+                    <li>
+                        <a href="https://www.nba.com" target="_blank" rel="noopener noreferrer">Official NBA Website</a>
+                    </li>
+                    <li>
+                        <a href="https://www.espn.com/nba/" target="_blank" rel="noopener noreferrer">ESPN NBA Coverage</a>
+                    </li>
+                    <li>
+                        <a href="https://www.basketball-reference.com" target="_blank" rel="noopener noreferrer">Basketball Reference</a>
+                    </li>
+                </ul>
+            </div>
+        </footer>
+        <script src="script.js"></script>
+    </body>
+</html>
