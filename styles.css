@@ -50,7 +50,7 @@ header {
 }
 
 .logo-text {
-    font-family: "Bebas Neue", cursive;
+    font-family: "Bebas Neue";
     font-size: 28px;
     color: #f57c25;
     letter-spacing: 2px;
@@ -92,7 +92,7 @@ header {
 }
 
 .hero h1 {
-    font-family: "Bebas Neue", cursive;
+    font-family: "Bebas Neue";
     font-size: 52px;
     color: #ffffff;
     letter-spacing: 3px;
@@ -127,7 +127,7 @@ header {
 }
 
 .section-title {
-    font-family: "Bebas Neue", cursive;
+    font-family: "Bebas Neue";
     font-size: 36px;
     color: #ffffff;
     letter-spacing: 2px;
@@ -184,13 +184,13 @@ header {
 }
 
 .score-card .vs {
-    font-family: "Bebas Neue", cursive;
+    font-family: "Bebas Neue";
     font-size: 20px;
     color: #f57c25;
 }
 
 .score-card .score {
-    font-family: "Bebas Neue", cursive;
+    font-family: "Bebas Neue";
     font-size: 28px;
     color: #ffffff;
     margin-bottom: 5px;
@@ -234,7 +234,7 @@ header {
 }
 
 .standings-box h3 {
-    font-family: "Bebas Neue", cursive;
+    font-family: "Bebas Neue";
     font-size: 24px;
     color: #f57c25;
     margin-bottom: 15px;
