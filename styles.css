@@ -36,6 +36,7 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 .logo {
@@ -76,17 +77,16 @@ header {
     font-weight: 600;
     color: #c0c0c0;
     padding: 5px 0;
-    transition: color 0.3s;
 }
 
 .nav-link:hover,
-.nav-link:active {
+.nav-link.active {
     color: #f57c25;
     border-bottom: 2px solid #f57c25;
 }
 
 .hero {
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    background: #16213e;
     text-align: center;
     padding: 80px 20px;
 }
@@ -113,7 +113,6 @@ header {
     border-radius: 5px;
     font-weight: 700;
     font-size: 16px;
-    transition: background-color 0.3s;
 }
 
 .hero-btn:hover {
@@ -145,14 +144,13 @@ header {
     gap: 15px;
 }
 
-.scored-card {
+.score-card {
     background-color: #1a1a2e;
     border: 1px solid #2a2a4a;
     border-radius: 8px;
     padding: 20px;
     min-width: 250px;
     text-align: center;
-    transition: border-color 0.3s;
 }
 
 .score-card:hover {
@@ -207,17 +205,13 @@ header {
     font-weight: 700;
 }
 
-.loading-msg {
-    color: #888;
-    font-style: italic;
-}
-
+.loading-msg,
 .no-games-msg {
     color: #888;
     font-style: italic;
-    text-align: center;
     padding: 20px;
 }
+
 
 .standings-wrapper {
     display: flex;
@@ -238,7 +232,6 @@ header {
     font-size: 24px;
     color: #f57c25;
     margin-bottom: 15px;
-    letter-spacing: 1px;
 }
 
 .standings-table {
@@ -269,8 +262,8 @@ header {
 
 .features-list {
     list-style: none;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    display: flex;
+    flex-wrap: wrap;
     gap: 15px;
 }
 
@@ -279,7 +272,7 @@ header {
     border: 1px solid #2a2a4a;
     border-radius: 8px;
     padding: 20px;
-    transition: border-color 0.3s;
+    flex: 1 1 45%;
 }
 
 .features-list li:hover {
@@ -338,7 +331,6 @@ header {
     font-weight: 700;
     cursor: pointer;
     font-family: "Open Sans", sans-serif;
-    transition: background-color 0.3s;
 }
 
 .form-btn:hover {
@@ -392,7 +384,6 @@ footer {
 .footer-links a {
     color: #f57c25;
     font-size: 13px;
-    transition: color 0.3s;
 }
 
 .footer-links a:hover {
@@ -413,10 +404,6 @@ footer {
         display: block;
     }
 
-    .header-container {
-        flex-wrap: wrap;
-    }
-
     .nav-list {
         flex-direction: column;
         gap: 0;
@@ -431,15 +418,11 @@ footer {
     }
 
     .hero h1 {
-        font-size: 36px;
+        font-size: 32px;
     }
 
-    .hero p {
-        font-size: 16px;
-    }
-
-    .features-list {
-        grid-template-columns: 1fr;
+    .features-list li {
+        flex: 1 1 100%;
     }
 
     .standings-wrapper {
@@ -449,19 +432,5 @@ footer {
     .footer-links {
         flex-direction: column;
         gap: 8px;
-    }
-}
-
-@media (max-width: 480px) {
-    .hero h1 {
-        font-size: 28px;
-    }
-
-    .section-title {
-        font-size: 28px;
-    }
-
-    .score-card {
-        min-width: 100%
     }
 }
