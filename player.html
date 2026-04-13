@@ -38,5 +38,136 @@
                 </nav>
             </div>
         </header>
+        <section class="page-header">
+            <h1>Player Stats</h1>
+            <p>Search for any NBA player to see their season stats.</p>
+        </section>
+        <main>
+            <section class="section">
+                <h2 class="section-title">Find a Player</h2>
+                <p class="section-subtitle">Type a player name and pick from the results</p>
+                <div class="search-box">
+                    <input type="text" id="player-search" placeholder="e.g. LeBron James" aria-label="Search for a player">
+                    <button id="search-btn" class="form-btn">Search</button>
+                </div>
+                <div id="search-results"></div>
+            </section>
+            <section class="section" id="player-info-section" style="display: none;">
+                <h2 class="section-title">Player Profile</h2>
+                <div class="player-card" id="player-card">
+                    <div class="player-card-header">
+                        <img id="player-photo" src="" alt="Player photo" class="player-photo">
+                        <div>
+                            <h3 id="player-name">Player Name</h3>
+                            <p id="player-details">Team | Position | #00</p>
+                        </div>
+                    </div>
+                    <table class="standings-table">
+                        <thead>
+                            <tr>
+                                <th>Points</th>
+                                <th>Rebounds</th>
+                                <th>Assists</th>
+                                <th>Steals</th>
+                                <th>Blocks</th>
+                                <th>Field Goal %</th>
+                                <th>3 Point %</th>
+                                <th>Free Throw %</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td id="stat-pts">-</td>
+                                <td id="stat-reb">-</td>
+                                <td id="stat-ast">-</td>
+                                <td id="stat-stl">-</td>
+                                <td id="stat-blk">-</td>
+                                <td id="stat-fg">-</td>
+                                <td id="stat-3p">-</td>
+                                <td id="stat-ft">-</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            <section class="section">
+                <h2 class="section-title">League Leaders</h2>
+                <p class="section-subtitle">Top performers across the NBA this season.</p>
+                <div class="leaders-wrapper">
+                    <div class="standings-box">
+                        <h3>Points Per Game</h3>
+                        <table class="standings-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Player</th>
+                                    <th>Team</th>
+                                    <th>Points Per Game</th>
+                                </tr>
+                            </thead>
+                            <tbody id="leaders-pts">
+                                <tr>
+                                    <td colspan="4">Loading...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="standings-box">
+                        <h3>Rebounds Per Game</h3>
+                        <table class="standings-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Player</th>
+                                    <th>Team</th>
+                                    <th>Rebounds Per Game</th>
+                                </tr>
+                            </thead>
+                            <tbody id="leaders-reb">
+                                <tr>
+                                    <td colspan="4">Loading...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="standings-box">
+                        <h3>Assists Per Game</h3>
+                        <table class="standings-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Player</th>
+                                    <th>Team</th>
+                                    <th>Assists Per Game</th>
+                                </tr>
+                            </thead>
+                            <tbody id="leaders-ast">
+                                <tr>
+                                    <td colspan="4">Loading...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </main>
+        <footer>
+            <div class="footer-content">
+                <p>&copy; 2026 NBA Stats Hub. All rights reserved.</p>
+                <p>Data provided by ESPN. This site is for educational purposes only.</p>
+                <ul class="footer-links">
+                    <li>
+                        <a href="https://www.nba.com" target="_blank" rel="noopener noreferrer">Official NBA Website</a>
+                    </li>
+                    <li>
+                        <a href="https://www.espn.com/nba/" target="_blank" rel="noopener noreferrer">ESPN NBA Coverage</a>
+                    </li>
+                    <li>
+                        <a href="https://www.basketball-reference.com" target="_blank" rel="noopener noreferrer">Basketball Reference</a>
+                    </li>
+                </ul>
+            </div>
+        </footer>
+        <script src="script.js"></script>
     </body>
 </html>
