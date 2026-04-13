@@ -122,8 +122,8 @@ function loadStandings() {
  
                 // Build table rows for the top 5 teams
                 var rowsHTML = "";
-                var limit = 15;
-                if (teams.length < 15) {
+                var limit = 5;
+                if (teams.length < 5) {
                     limit = teams.length;
                 }
  
