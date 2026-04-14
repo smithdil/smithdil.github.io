@@ -38,5 +38,112 @@
                 </nav>
             </div>
         </header>
+        <section class="page-header">
+            <h1>Compare</h1>
+            <p>Pick two teams or two players and see how they stack up.</p>
+        </section>
+        <main>
+            <section class="section">
+                <h2 class="section-title">What Do You Want to Compare?</h2>
+                <p class="section-subtitle">Choose a mode, then pick your matchup!</p>
+                <div class="compare-toggle">
+                    <button id="mode-teams" class="form-btn compare-mode-btn active-btn">Compare Teams</button>
+                    <button id="mode-players" class="form-btn compare-mode-btn">Compare Players</button>
+                </div>
+            </section>
+            <section class="section" id="team-compare-section">
+                <h2 class="section-title">Team vs. Team</h2>
+                <div class="compare-selectors">
+                    <div class="compare-pick">
+                        <label for="team-a">Team 1:</label>
+                        <select id="team-a" class="compare-dropdown">
+                            <option value="">-- Select a team --</option>
+                        </select>
+                    </div>
+                    <span class="compare-vs">vs.</span>
+                    <div class="compare-pick">
+                        <label for="team-b">Team 2:</label>
+                        <select id="team-b" class="compare-dropdown">
+                            <option value="">-- Select a team --</option>
+                        </select>
+                    </div>
+                </div>
+                <button id="compare-teams-btn" class="form-btn">Compare</button>
+                <div id="team-compare-results" style="display: none;">
+                    <table class="standings-table compare-table">
+                        <thead>
+                            <tr>
+                                <th>Stat</th>
+                                <th id="team-a-name">Team 1</th>
+                                <th id="team-b-name">Team 2</th>
+                            </tr>
+                        </thead>
+                        <tbody id="team-compare-body">
+                            <tr>
+                                <td colspan="3">Select two teams and click "Compare"</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            <section class="section" id="player-compare-section" style="display: none;">
+                <h2 class="section-title">Player vs. Player</h2>
+                <div class="compare-selectors">
+                    <div class="compare-pick">
+                        <label for="player-a">Player 1:</label>
+                        <input type="text" id="player-a" placeholder="e.g. LeBron James" class="compare-input">
+                    </div>
+                    <span class="compare-vs">vs.</span>
+                    <div class="compare-pick">
+                        <label for="player-b">Player 2:</label>
+                        <input type="text" id="player-b" placeholder="e.g. Kevin Durant" class="compare-input">
+                    </div>
+                </div>
+                <button id="compare-players-btn" class="form-btn">Compare</button>
+                <div id="player-compare-results" style="display: none;">
+                    <table class="standings-table compare-table">
+                        <thead>
+                            <tr>
+                                <th>Stat</th>
+                                <th id="player-a-name">Player 1</th>
+                                <th id="player-b-name">Player 2</th>
+                            </tr>
+                        </thead>
+                        <tbody id="player-compare-body">
+                            <tr>
+                                <td colspan="3">Enter two players and click "Compare"</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            <section class="section">
+                <h2 class="section-title">How It Works</h2>
+                <ol class="how-it-works-list">
+                    <li>Pick whether you want to compare <strong>teams</strong> or <strong>players</strong>.</li>
+                    <li>Select or type in your two choices.</li>
+                    <li>Click <strong>Compare</strong> to see their stats side by side.</li>
+                    <li>The better stat in each row is highlighted so you can see who is better.</li>
+                </ol>
+            </section>
+        </main>
+        <footer>
+            <div class="footer-content">
+                <p>&copy; 2026 NBA Stats Hub. All rights reserved.</p>
+                <p>Data provided by ESPN. This site is for educational purposes only.</p>
+                <ul class="footer-links">
+                    <li>
+                        <a href="https://www.nba.com" target="_blank" rel="noopener noreferrer">Official NBA Website</a>
+                    </li>
+                    <li>
+                        <a href="https://www.espn.com/nba/" target="_blank" rel="noopener noreferrer">ESPN NBA Coverage</a>
+                    </li>
+                    <li>
+                        <a href="https://www.basketball-reference.com" target="_blank" rel="noopener noreferrer">Basketball Reference</a>
+                    </li>
+                </ul>
+            </div>
+        </footer>
+        <script src="script.js"></script>
     </body>
 </html>
