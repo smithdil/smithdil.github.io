@@ -73,7 +73,7 @@ header {
 }
 
 .nav-link {
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 600;
     color: #c0c0c0;
     padding: 5px 0;
@@ -178,12 +178,12 @@ header {
 
 .score-card .team-name {
     font-weight: 700;
-    font-size: 14px;
+    font-size: 16px;
 }
 
 .score-card .vs {
     font-family: "Bebas Neue";
-    font-size: 20px;
+    font-size: 24px;
     color: #f57c25;
 }
 
@@ -195,7 +195,7 @@ header {
 }
 
 .score-card .status {
-    font-size: 12px;
+    font-size: 16px;
     color: #888;
     text-transform: uppercase;
 }
@@ -248,12 +248,12 @@ header {
 
 .standings-table th {
     color: #f57c25;
-    font-size: 13px;
+    font-size: 16px;
     text-transform: uppercase;
 }
 
 .standings-table td {
-    font-size: 14px;
+    font-size: 16px;
 }
 
 .standings-table tbody tr:hover {
@@ -299,7 +299,7 @@ header {
     display: block;
     margin-bottom: 6px;
     font-weight: 600;
-    font-size: 14px;
+    font-size: 16px;
     color: #c0c0c0;
 }
 
@@ -311,7 +311,7 @@ header {
     border-radius: 5px;
     background-color: #0e1525;
     color: #e0e0e0;
-    font-size: 14px;
+    font-size: 16px;
     font-family: "Open Sans", sans-serif;
 }
 
@@ -368,7 +368,7 @@ footer {
 }
 
 .footer-content p {
-    font-size: 13px;
+    font-size: 16px;
     color: #888;
     margin-bottom: 8px;
 }
@@ -383,7 +383,7 @@ footer {
 
 .footer-links a {
     color: #f57c25;
-    font-size: 13px;
+    font-size: 16px;
 }
 
 .footer-links a:hover {
