@@ -38,5 +38,73 @@
                 </nav>
             </div>
         </header>
+        <section class="page-header">
+            <h1>Contact Us</h1>
+            <P>Have feedback, a question, or found a bug? We'd love to hear from you!</P>
+        </section>
+        <main>
+            <section class="section">
+                <h2 class="section-title">Send Us a Message</h2>
+                <p class="section-subtitle">Fill out the form below and we'll get back to you!</p>
+                <form id="contact-form" class="signup-form">
+                    <div class="form-group">
+                        <label for="contact-name">Your Name:</label>
+                        <input type="text" id="contact-name" name="contact-name" placeholder="e.g. John Smith" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contact-email">Your Email:</label>
+                        <input type="email" id="contact-email" name="contact-email" placeholder="e.g. john@email.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contact-subject">Subject:</label>
+                        <select id="contact-subject" name="contact-subject">
+                            <option value="">-- Pick a topic --</option>
+                            <option value="feedback">General Feedback</option>
+                            <option value="bug">Report a Bug</option>
+                            <option value="feature">Feature Request</option>
+                            <option value="question">Question</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="contact-message">Your Message:</label>
+                        <textarea id="contact-message" name="contact-message" rows="6" placeholder="Type your message here..." required></textarea>
+                    </div>
+                    <button type="submit" class="form-btn">Send Message</button>
+                </form>
+                <div id="contact-form-message" class="form-message"></div>
+            </section>
+            <section class="section">
+                <h2 class="section title">Frequently Asked Questions</h2>
+                <dl class="faq-list">
+                    <dt>Where does the data come from?</dt>
+                    <dd>All stats and scores are pulled from ESPN's public API and update every time you visit the site.</dd>
+                    <dt>Can I compare players from different teams?</dt>
+                    <dd>Yes! Head over to the <a href="compare.html">Compare</a> page and type in any two player names to see their stats side by side.</dd>
+                    <dt>Is this site free to use?</dt>
+                    <dd>Absolutely. NBA stats Hub is a free, student-built project for educational purposes.</dd>
+                    <dt>I found a bug or something looks wrong. What do I do?</dt>
+                    <dd>Use the form above to report it. Pick "Report a Bug" as the subject and describe what happened.</dd>
+                </dl>
+            </section>
+        </main>
+        <footer>
+            <div class="footer-content">
+                <p>&copy; 2026 NBA Stats Hub. All rights reserved.</p>
+                <p>Data provided by ESPN. This site is for educational purposes only.</p>
+                <ul class="footer-links">
+                    <li>
+                        <a href="https://www.nba.com" target="_blank" rel="noopener noreferrer">Official NBA Website</a>
+                    </li>
+                    <li>
+                        <a href="https://www.espn.com/nba/" target="_blank" rel="noopener noreferrer">ESPN NBA Coverage</a>
+                    </li>
+                    <li>
+                        <a href="https://www.basketball-reference.com" target="_blank" rel="noopener noreferrer">Basketball Reference</a>
+                    </li>
+                </ul>
+            </div>
+        </footer>
+        <script src="script.js"></script>
     </body>
 </html>
