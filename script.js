@@ -2,7 +2,7 @@
 var SCORES_URL = "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard";
 var STANDINGS_URL = "https://site.api.espn.com/apis/v2/sports/basketball/nba/standings";
 var TEAMS_URL = "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/teams";
-var LEADERS_URL = "https://site.web.api.espn.com/apis/site/v2/sports/basketball/nba/leaders";
+var STATS_URL = "https://site.web.api.espn.com/apis/common/v3/sports/basketball/nba/statistics/byathlete";
 
 // Scores - home page
 function loadScores() {
@@ -151,36 +151,56 @@ function loadLeagueLeaders() {
     var rebBody = document.getElementById("leaders-reb");
     var astBody = document.getElementById("leaders-ast");
     if (!ptsBody || !rebBody || !astBody) return;
-    fetch(LEADERS_URL)
+    fetchLeaders("offensive.avgPoints", ptsBody);
+    fetchLeaders("general.avgRebounds", rebBody);
+    fetchLeaders("offensive.avgAssists", astBody);
+}
+
+// Helper: fetch top 5 leaders for a given stat key
+function fetchLeaders(sortKey, tableBody) {
+    var url = STATS_URL + "?isqualified=true&page=1&limit=5&sort=" + sortKey + ":desc";
+    fetch(url)
         .then(function (response) { return response.json(); })
         .then(function (data) {
-            var categories = data.leaders;
-            for (var c = 0; c < categories.length; c++) {
-                var cat = categories[c];
-                var targetBody = null;
-                if (cat.name === "avgPoints") targetBody = ptsBody;
-                if (cat.name === "avgRebounds") targetBody = rebBody;
-                if (cat.name === "avgAssists") targetBody = astBody;
-                if (targetBody === null) continue;
-                var rows = "";
-                var limit = 5;
-                if (cat.leaders.length < 5) limit = cat.leaders.length;
-                for (var i = 0; i < limit; i++) {
-                    var leader = cat.leaders[i];
-                    var teamAbbr = "-";
-                    if (leader.team) teamAbbr = leader.team.abbreviation;
-                    rows += "<tr>";
-                    rows += "<td>" + (i + 1) + "</td>";
-                    rows += "<td>" + leader.athlete.displayName + "</td>";
-                    rows += "<td>" + teamAbbr + "</td>";
-                    rows += "<td>" + leader.displayValue + "</td>";
-                    rows += "</tr>";
-                }
-                targetBody.innerHTML = rows;
+            var athletes = data.athletes || [];
+            if (athletes.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="4">No data available.</td></tr>';
+                return;
             }
+            var rows = "";
+            for (var i = 0; i < athletes.length; i++) {
+                var entry = athletes[i];
+                var name = entry.athlete ? entry.athlete.displayName : "Unknown";
+                var teamAbbr = "-";
+                if (entry.athlete && entry.athlete.teamShortName) teamAbbr = entry.athlete.teamShortName;
+                // Find the displayValue for the sorted stat
+                var value = "-";
+                var categories = entry.categories || [];
+                var sortParts = sortKey.split(".");
+                var catName = sortParts[0];
+                var statName = sortParts[1];
+                for (var c = 0; c < categories.length; c++) {
+                    if (categories[c].name === catName) {
+                        var stats = categories[c].stats || [];
+                        for (var s = 0; s < stats.length; s++) {
+                            if (stats[s].name === statName) {
+                                value = stats[s].displayValue;
+                            }
+                        }
+                    }
+                }
+                rows += "<tr>";
+                rows += "<td>" + (i + 1) + "</td>";
+                rows += "<td>" + name + "</td>";
+                rows += "<td>" + teamAbbr + "</td>";
+                rows += "<td>" + value + "</td>";
+                rows += "</tr>";
+            }
+            tableBody.innerHTML = rows;
         })
         .catch(function (error) {
             console.log("Error loading leaders:", error);
+            tableBody.innerHTML = '<tr><td colspan="4">Unable to load leaders.</td></tr>';
         });
 }
 
@@ -329,57 +349,44 @@ function setupPlayerCompare() {
         }
         resultsDiv.style.display = "block";
         body.innerHTML = '<tr><td colspan="3">Loading...</td></tr>';
-        fetch(LEADERS_URL)
+        // Pull a big page of all qualified players sorted by points
+        var url = STATS_URL + "?isqualified=true&page=1&limit=500&sort=offensive.avgPoints:desc";
+        fetch(url)
             .then(function (response) { return response.json(); })
             .then(function (data) {
-                var playerA = { name: "", pts: "-", reb: "-", ast: "-", stl: "-", blk: "-" };
-                var playerB = { name: "", pts: "-", reb: "-", ast: "-", stl: "-", blk: "-" };
-                var categories = data.leaders;
-                for (var c = 0; c < categories.length; c++) {
-                    var cat = categories[c];
-                    var key = "";
-                    if (cat.name === "avgPoints") key = "pts";
-                    if (cat.name === "avgRebounds") key = "reb";
-                    if (cat.name === "avgAssists") key = "ast";
-                    if (cat.name === "avgSteals") key = "stl";
-                    if (cat.name === "avgBlocks") key = "blk";
-                    if (key === "") continue;
-                    for (var i = 0; i < cat.leaders.length; i++) {
-                        var leader = cat.leaders[i];
-                        var playerName = leader.athlete.displayName.toLowerCase();
-                        if (playerName.indexOf(nameA) !== -1) {
-                            playerA.name = leader.athlete.displayName;
-                            playerA[key] = leader.displayValue;
-                        }
-                        if (playerName.indexOf(nameB) !== -1) {
-                            playerB.name = leader.athlete.displayName;
-                            playerB[key] = leader.displayValue;
-                        }
-                    }
+                var athletes = data.athletes || [];
+                var entryA = null;
+                var entryB = null;
+                for (var i = 0; i < athletes.length; i++) {
+                    var athleteName = athletes[i].athlete.displayName.toLowerCase();
+                    if (entryA === null && athleteName.indexOf(nameA) !== -1) entryA = athletes[i];
+                    if (entryB === null && athleteName.indexOf(nameB) !== -1) entryB = athletes[i];
                 }
-                if (playerA.name === "") {
-                    body.innerHTML = '<tr><td colspan="3">Could not find "' + nameA + '" in league leaders. Try a top-50 player.</td></tr>';
+                if (entryA === null) {
+                    body.innerHTML = '<tr><td colspan="3">Could not find a player named "' + nameA + '". Try a full name.</td></tr>';
                     return;
                 }
-                if (playerB.name === "") {
-                    body.innerHTML = '<tr><td colspan="3">Could not find "' + nameB + '" in league leaders. Try a top-50 player.</td></tr>';
+                if (entryB === null) {
+                    body.innerHTML = '<tr><td colspan="3">Could not find a player named "' + nameB + '". Try a full name.</td></tr>';
                     return;
                 }
-                document.getElementById("player-a-name").textContent = playerA.name;
-                document.getElementById("player-b-name").textContent = playerB.name;
+                document.getElementById("player-a-name").textContent = entryA.athlete.displayName;
+                document.getElementById("player-b-name").textContent = entryB.athlete.displayName;
                 var labels = [
-                    { label: "Points / Game", key: "pts" },
-                    { label: "Rebounds / Game", key: "reb" },
-                    { label: "Assists / Game", key: "ast" },
-                    { label: "Steals / Game", key: "stl" },
-                    { label: "Blocks / Game", key: "blk" }
+                    { label: "Points / Game", cat: "offensive", stat: "avgPoints" },
+                    { label: "Rebounds / Game", cat: "general", stat: "avgRebounds" },
+                    { label: "Assists / Game", cat: "offensive", stat: "avgAssists" },
+                    { label: "Steals / Game", cat: "defensive", stat: "avgSteals" },
+                    { label: "Blocks / Game", cat: "defensive", stat: "avgBlocks" }
                 ];
                 var rows = "";
                 for (var i = 0; i < labels.length; i++) {
+                    var aVal = getAthleteStat(entryA, labels[i].cat, labels[i].stat);
+                    var bVal = getAthleteStat(entryB, labels[i].cat, labels[i].stat);
                     rows += "<tr>";
                     rows += "<td>" + labels[i].label + "</td>";
-                    rows += "<td>" + playerA[labels[i].key] + "</td>";
-                    rows += "<td>" + playerB[labels[i].key] + "</td>";
+                    rows += "<td>" + aVal + "</td>";
+                    rows += "<td>" + bVal + "</td>";
                     rows += "</tr>";
                 }
                 body.innerHTML = rows;
@@ -389,6 +396,20 @@ function setupPlayerCompare() {
                 body.innerHTML = '<tr><td colspan="3">Unable to load player data.</td></tr>';
             });
     });
+}
+
+// Helper: pull a stat displayValue from an athlete entry
+function getAthleteStat(entry, catName, statName) {
+    var categories = entry.categories || [];
+    for (var c = 0; c < categories.length; c++) {
+        if (categories[c].name === catName) {
+            var stats = categories[c].stats || [];
+            for (var s = 0; s < stats.length; s++) {
+                if (stats[s].name === statName) return stats[s].displayValue;
+            }
+        }
+    }
+    return "-";
 }
 
 // Signup form - home page
