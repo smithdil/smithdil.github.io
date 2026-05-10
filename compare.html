@@ -16,11 +16,11 @@
                     <img src="https://cdn.nba.com/logos/leagues/logo-nba.svg" alt="NBA Stats Hub Logo" class="logo-img">
                     <span class="logo-text">Stats Hub</span>
                 </div>
-                <button class="hamburger" id="hamburger" aria-label="Toggle navigation menu">&#9776</button>
+                <button type="button" class="hamburger" id="hamburger" aria-label="Toggle navigation menu">&#9776;</button>
                 <nav id="nav-menu">
                     <ul class="nav-list">
                         <li>
-                            <a href="index.html" class="nav-link active">Home</a>
+                            <a href="index.html" class="nav-link">Home</a>
                         </li>
                         <li>
                             <a href="standings.html" class="nav-link">Standings</a>
@@ -29,7 +29,7 @@
                             <a href="player.html" class="nav-link">Player Stats</a>
                         </li>
                         <li>
-                            <a href="compare.html" class="nav-link">Compare</a>
+                            <a href="compare.html" class="nav-link active">Compare</a>
                         </li>
                         <li>
                             <a href="contact.html" class="nav-link">Contact</a>
@@ -47,8 +47,8 @@
                 <h2 class="section-title">What Do You Want to Compare?</h2>
                 <p class="section-subtitle">Choose a mode, then pick your matchup!</p>
                 <div class="compare-toggle">
-                    <button id="mode-teams" class="form-btn compare-mode-btn active-btn">Compare Teams</button>
-                    <button id="mode-players" class="form-btn compare-mode-btn">Compare Players</button>
+                    <button type="button" id="mode-teams" class="form-btn compare-mode-btn active-btn">Compare Teams</button>
+                    <button type="button" id="mode-players" class="form-btn compare-mode-btn">Compare Players</button>
                 </div>
             </section>
             <section class="section" id="team-compare-section">
@@ -68,14 +68,14 @@
                         </select>
                     </div>
                 </div>
-                <button id="compare-teams-btn" class="form-btn">Compare</button>
+                <button type="button" id="compare-teams-btn" class="form-btn">Compare</button>
                 <div id="team-compare-results" style="display: none;">
                     <table class="standings-table compare-table">
                         <thead>
                             <tr>
-                                <th>Stat</th>
-                                <th id="team-a-name">Team 1</th>
-                                <th id="team-b-name">Team 2</th>
+                                <th scope="col">Stat</th>
+                                <th scope="col" id="team-a-name">Team 1</th>
+                                <th scope="col" id="team-b-name">Team 2</th>
                             </tr>
                         </thead>
                         <tbody id="team-compare-body">
@@ -99,14 +99,14 @@
                         <input type="text" id="player-b" placeholder="e.g. Kevin Durant" class="compare-input">
                     </div>
                 </div>
-                <button id="compare-players-btn" class="form-btn">Compare</button>
+                <button type="button" id="compare-players-btn" class="form-btn">Compare</button>
                 <div id="player-compare-results" style="display: none;">
                     <table class="standings-table compare-table">
                         <thead>
                             <tr>
-                                <th>Stat</th>
-                                <th id="player-a-name">Player 1</th>
-                                <th id="player-b-name">Player 2</th>
+                                <th scope="col">Stat</th>
+                                <th scope="col" id="player-a-name">Player 1</th>
+                                <th scope="col" id="player-b-name">Player 2</th>
                             </tr>
                         </thead>
                         <tbody id="player-compare-body">
