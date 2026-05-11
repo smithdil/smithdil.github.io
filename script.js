@@ -1,7 +1,6 @@
 // NBA Stats Hub
 var SCORES_URL = "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard";
 var STANDINGS_URL = "https://site.api.espn.com/apis/v2/sports/basketball/nba/standings";
-var TEAMS_URL = "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/teams";
 var STATS_URL = "https://site.web.api.espn.com/apis/common/v3/sports/basketball/nba/statistics/byathlete";
 
 // Scores - home page
@@ -237,25 +236,32 @@ function findStatValue(entry, statName) {
     return "-";
 }
 
-// Fill team dropdowns
+// Fill team dropdowns - uses standings data (more reliable than the teams endpoint)
 function loadTeams() {
     var favDropdown = document.getElementById("fav-team");
     var teamADropdown = document.getElementById("team-a");
     var teamBDropdown = document.getElementById("team-b");
     if (!favDropdown && !teamADropdown && !teamBDropdown) return;
-    fetch(TEAMS_URL)
+    fetch(STANDINGS_URL)
         .then(function (response) { return response.json(); })
         .then(function (data) {
-            var teams = data.sports[0].leagues[0].teams;
-            console.log("loadTeams: got " + teams.length + " teams, favDropdown=" + !!favDropdown + ", teamA=" + !!teamADropdown + ", teamB=" + !!teamBDropdown);
+            // Collect every team from both conferences
+            var teams = [];
+            for (var c = 0; c < data.children.length; c++) {
+                var entries = data.children[c].standings.entries;
+                for (var e = 0; e < entries.length; e++) {
+                    teams.push(entries[e].team);
+                }
+            }
+            // Sort alphabetically
             teams.sort(function (a, b) {
-                if (a.team.displayName < b.team.displayName) return -1;
-                if (a.team.displayName > b.team.displayName) return 1;
+                if (a.displayName < b.displayName) return -1;
+                if (a.displayName > b.displayName) return 1;
                 return 0;
             });
             for (var i = 0; i < teams.length; i++) {
-                var name = teams[i].team.displayName;
-                var id = teams[i].team.id;
+                var name = teams[i].displayName;
+                var id = teams[i].id;
                 if (favDropdown) {
                     var opt1 = document.createElement("option");
                     opt1.value = name;
