@@ -1,9 +1,7 @@
-// NBA Stats Hub
 var SCORES_URL = "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard";
 var STANDINGS_URL = "https://site.api.espn.com/apis/v2/sports/basketball/nba/standings";
 var STATS_URL = "https://site.web.api.espn.com/apis/common/v3/sports/basketball/nba/statistics/byathlete";
 
-// Scores - home page
 function loadScores() {
     var container = document.getElementById("scores-container");
     if (!container) return;
@@ -50,7 +48,6 @@ function loadScores() {
         });
 }
 
-// Top 5 standings - home page
 function loadStandings() {
     var eastBody = document.getElementById("east-standings");
     var westBody = document.getElementById("west-standings");
@@ -61,7 +58,7 @@ function loadStandings() {
             var conferences = data.children;
             for (var c = 0; c < conferences.length; c++) {
                 var teams = conferences[c].standings.entries;
-                // Sort by win percentage (highest first)
+
                 teams.sort(function (a, b) {
                     var pctA = 0, pctB = 0;
                     for (var i = 0; i < a.stats.length; i++) {
@@ -104,7 +101,6 @@ function loadStandings() {
         });
 }
 
-// Full standings - standings page
 function loadFullStandings() {
     var eastBody = document.getElementById("full-east-standings");
     var westBody = document.getElementById("full-west-standings");
@@ -115,7 +111,7 @@ function loadFullStandings() {
             var conferences = data.children;
             for (var c = 0; c < conferences.length; c++) {
                 var teams = conferences[c].standings.entries;
-                // Sort by win percentage (highest first)
+
                 teams.sort(function (a, b) {
                     var pctA = 0, pctB = 0;
                     for (var i = 0; i < a.stats.length; i++) {
@@ -166,7 +162,6 @@ function loadFullStandings() {
         });
 }
 
-// League leaders - player page
 function loadLeagueLeaders() {
     var ptsBody = document.getElementById("leaders-pts");
     var rebBody = document.getElementById("leaders-reb");
@@ -177,7 +172,6 @@ function loadLeagueLeaders() {
     fetchLeaders("offensive.avgAssists", astBody);
 }
 
-// Helper: fetch top 5 leaders for a given stat key
 function fetchLeaders(sortKey, tableBody) {
     var url = STATS_URL + "?isqualified=true&page=1&limit=5&sort=" + sortKey + ":desc";
     fetch(url)
@@ -188,7 +182,7 @@ function fetchLeaders(sortKey, tableBody) {
                 tableBody.innerHTML = '<tr><td colspan="4">No data available.</td></tr>';
                 return;
             }
-            // The stat name we want (e.g. "avgPoints" from "offensive.avgPoints")
+
             var sortParts = sortKey.split(".");
             var wantedStatName = sortParts[1];
             var rows = "";
@@ -213,9 +207,8 @@ function fetchLeaders(sortKey, tableBody) {
         });
 }
 
-// Helper: search through an athlete entry for any stat by name
 function findStatValue(entry, statName) {
-    // Try flat stats array first
+
     if (entry.stats) {
         for (var i = 0; i < entry.stats.length; i++) {
             if (entry.stats[i].name === statName) {
@@ -223,7 +216,7 @@ function findStatValue(entry, statName) {
             }
         }
     }
-    // Try nested categories
+
     var categories = entry.categories || [];
     for (var c = 0; c < categories.length; c++) {
         var stats = categories[c].stats || [];
@@ -236,7 +229,6 @@ function findStatValue(entry, statName) {
     return "-";
 }
 
-// Fill team dropdowns - uses standings data (more reliable than the teams endpoint)
 function loadTeams() {
     var favDropdown = document.getElementById("fav-team");
     var teamADropdown = document.getElementById("team-a");
@@ -245,7 +237,7 @@ function loadTeams() {
     fetch(STANDINGS_URL)
         .then(function (response) { return response.json(); })
         .then(function (data) {
-            // Collect every team from both conferences
+
             var teams = [];
             for (var c = 0; c < data.children.length; c++) {
                 var entries = data.children[c].standings.entries;
@@ -253,7 +245,7 @@ function loadTeams() {
                     teams.push(entries[e].team);
                 }
             }
-            // Sort alphabetically
+
             teams.sort(function (a, b) {
                 if (a.displayName < b.displayName) return -1;
                 if (a.displayName > b.displayName) return 1;
@@ -287,7 +279,6 @@ function loadTeams() {
         });
 }
 
-// Compare teams
 function setupTeamCompare() {
     var btn = document.getElementById("compare-teams-btn");
     if (!btn) return;
@@ -356,7 +347,6 @@ function setupTeamCompare() {
     });
 }
 
-// Compare page mode toggle
 function setupCompareMode() {
     var teamsBtn = document.getElementById("mode-teams");
     var playersBtn = document.getElementById("mode-players");
@@ -373,7 +363,6 @@ function setupCompareMode() {
     });
 }
 
-// Compare players - uses league leaders data
 function setupPlayerCompare() {
     var btn = document.getElementById("compare-players-btn");
     if (!btn) return;
@@ -389,7 +378,7 @@ function setupPlayerCompare() {
         }
         resultsDiv.style.display = "block";
         body.innerHTML = '<tr><td colspan="3">Loading...</td></tr>';
-        // Pull a big page of all qualified players sorted by points
+
         var url = STATS_URL + "?isqualified=true&page=1&limit=500&sort=offensive.avgPoints:desc";
         fetch(url)
             .then(function (response) { return response.json(); })
@@ -438,7 +427,6 @@ function setupPlayerCompare() {
     });
 }
 
-// Signup form - home page
 function setupSignupForm() {
     var form = document.getElementById("signup-form");
     if (!form) return;
@@ -463,7 +451,6 @@ function setupSignupForm() {
     });
 }
 
-// Contact form
 function setupContactForm() {
     var form = document.getElementById("contact-form");
     if (!form) return;
@@ -484,7 +471,6 @@ function setupContactForm() {
     });
 }
 
-// Hamburger menu
 function setupHamburger() {
     var hamburger = document.getElementById("hamburger");
     var navMenu = document.getElementById("nav-menu");
@@ -498,7 +484,6 @@ function setupHamburger() {
     });
 }
 
-// Run on page load
 window.addEventListener("DOMContentLoaded", function () {
     loadScores();
     loadStandings();
