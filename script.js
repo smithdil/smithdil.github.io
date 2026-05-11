@@ -182,6 +182,7 @@ function fetchLeaders(sortKey, tableBody) {
                 tableBody.innerHTML = '<tr><td colspan="4">No data available.</td></tr>';
                 return;
             }
+            console.log("FIRST ATHLETE FOR " + sortKey + ":", JSON.stringify(athletes[0], null, 2));
 
             var sortParts = sortKey.split(".");
             var wantedStatName = sortParts[1];
