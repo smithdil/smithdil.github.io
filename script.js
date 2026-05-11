@@ -167,12 +167,12 @@ function loadLeagueLeaders() {
     var rebBody = document.getElementById("leaders-reb");
     var astBody = document.getElementById("leaders-ast");
     if (!ptsBody || !rebBody || !astBody) return;
-    fetchLeaders("offensive.avgPoints", ptsBody);
-    fetchLeaders("general.avgRebounds", rebBody);
-    fetchLeaders("offensive.avgAssists", astBody);
+    fetchLeaders("offensive.avgPoints", "offensive", 0, ptsBody);
+    fetchLeaders("general.avgRebounds", "general", 11, rebBody);
+    fetchLeaders("offensive.avgAssists", "offensive", 10, astBody);
 }
 
-function fetchLeaders(sortKey, tableBody) {
+function fetchLeaders(sortKey, catName, statIndex, tableBody) {
     var url = STATS_URL + "?isqualified=true&page=1&limit=5&sort=" + sortKey + ":desc";
     fetch(url)
         .then(function (response) { return response.json(); })
@@ -182,17 +182,13 @@ function fetchLeaders(sortKey, tableBody) {
                 tableBody.innerHTML = '<tr><td colspan="4">No data available.</td></tr>';
                 return;
             }
-            console.log("FIRST ATHLETE FOR " + sortKey + ":", JSON.stringify(athletes[0], null, 2));
-
-            var sortParts = sortKey.split(".");
-            var wantedStatName = sortParts[1];
             var rows = "";
             for (var i = 0; i < athletes.length; i++) {
                 var entry = athletes[i];
                 var name = entry.athlete ? entry.athlete.displayName : "Unknown";
                 var teamAbbr = "-";
                 if (entry.athlete && entry.athlete.teamShortName) teamAbbr = entry.athlete.teamShortName;
-                var value = findStatValue(entry, wantedStatName);
+                var value = getCategoryStat(entry, catName, statIndex);
                 rows += "<tr>";
                 rows += "<td>" + (i + 1) + "</td>";
                 rows += "<td>" + name + "</td>";
@@ -208,23 +204,12 @@ function fetchLeaders(sortKey, tableBody) {
         });
 }
 
-function findStatValue(entry, statName) {
-
-    if (entry.stats) {
-        for (var i = 0; i < entry.stats.length; i++) {
-            if (entry.stats[i].name === statName) {
-                return entry.stats[i].displayValue || entry.stats[i].value || "-";
-            }
-        }
-    }
-
+function getCategoryStat(entry, catName, statIndex) {
     var categories = entry.categories || [];
     for (var c = 0; c < categories.length; c++) {
-        var stats = categories[c].stats || [];
-        for (var s = 0; s < stats.length; s++) {
-            if (stats[s].name === statName) {
-                return stats[s].displayValue || stats[s].value || "-";
-            }
+        if (categories[c].name === catName) {
+            var totals = categories[c].totals || [];
+            if (statIndex < totals.length) return totals[statIndex];
         }
     }
     return "-";
@@ -403,16 +388,16 @@ function setupPlayerCompare() {
                 document.getElementById("player-a-name").textContent = entryA.athlete.displayName;
                 document.getElementById("player-b-name").textContent = entryB.athlete.displayName;
                 var labels = [
-                    { label: "Points / Game", stat: "avgPoints" },
-                    { label: "Rebounds / Game", stat: "avgRebounds" },
-                    { label: "Assists / Game", stat: "avgAssists" },
-                    { label: "Steals / Game", stat: "avgSteals" },
-                    { label: "Blocks / Game", stat: "avgBlocks" }
+                    { label: "Points / Game", cat: "offensive", idx: 0 },
+                    { label: "Rebounds / Game", cat: "general", idx: 11 },
+                    { label: "Assists / Game", cat: "offensive", idx: 10 },
+                    { label: "Steals / Game", cat: "defensive", idx: 0 },
+                    { label: "Blocks / Game", cat: "defensive", idx: 1 }
                 ];
                 var rows = "";
                 for (var i = 0; i < labels.length; i++) {
-                    var aVal = findStatValue(entryA, labels[i].stat);
-                    var bVal = findStatValue(entryB, labels[i].stat);
+                    var aVal = getCategoryStat(entryA, labels[i].cat, labels[i].idx);
+                    var bVal = getCategoryStat(entryB, labels[i].cat, labels[i].idx);
                     rows += "<tr>";
                     rows += "<td>" + labels[i].label + "</td>";
                     rows += "<td>" + aVal + "</td>";
