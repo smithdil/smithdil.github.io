@@ -62,6 +62,17 @@ function loadStandings() {
             var conferences = data.children;
             for (var c = 0; c < conferences.length; c++) {
                 var teams = conferences[c].standings.entries;
+                // Sort by win percentage (highest first)
+                teams.sort(function (a, b) {
+                    var pctA = 0, pctB = 0;
+                    for (var i = 0; i < a.stats.length; i++) {
+                        if (a.stats[i].name === "winPercent") pctA = a.stats[i].value;
+                    }
+                    for (var i = 0; i < b.stats.length; i++) {
+                        if (b.stats[i].name === "winPercent") pctB = b.stats[i].value;
+                    }
+                    return pctB - pctA;
+                });
                 var rowsHTML = "";
                 var limit = 5;
                 if (teams.length < 5) limit = teams.length;
@@ -105,6 +116,17 @@ function loadFullStandings() {
             var conferences = data.children;
             for (var c = 0; c < conferences.length; c++) {
                 var teams = conferences[c].standings.entries;
+                // Sort by win percentage (highest first)
+                teams.sort(function (a, b) {
+                    var pctA = 0, pctB = 0;
+                    for (var i = 0; i < a.stats.length; i++) {
+                        if (a.stats[i].name === "winPercent") pctA = a.stats[i].value;
+                    }
+                    for (var i = 0; i < b.stats.length; i++) {
+                        if (b.stats[i].name === "winPercent") pctB = b.stats[i].value;
+                    }
+                    return pctB - pctA;
+                });
                 var rowsHTML = "";
                 for (var i = 0; i < teams.length; i++) {
                     var team = teams[i];
@@ -167,28 +189,16 @@ function fetchLeaders(sortKey, tableBody) {
                 tableBody.innerHTML = '<tr><td colspan="4">No data available.</td></tr>';
                 return;
             }
+            // The stat name we want (e.g. "avgPoints" from "offensive.avgPoints")
+            var sortParts = sortKey.split(".");
+            var wantedStatName = sortParts[1];
             var rows = "";
             for (var i = 0; i < athletes.length; i++) {
                 var entry = athletes[i];
                 var name = entry.athlete ? entry.athlete.displayName : "Unknown";
                 var teamAbbr = "-";
                 if (entry.athlete && entry.athlete.teamShortName) teamAbbr = entry.athlete.teamShortName;
-                // Find the displayValue for the sorted stat
-                var value = "-";
-                var categories = entry.categories || [];
-                var sortParts = sortKey.split(".");
-                var catName = sortParts[0];
-                var statName = sortParts[1];
-                for (var c = 0; c < categories.length; c++) {
-                    if (categories[c].name === catName) {
-                        var stats = categories[c].stats || [];
-                        for (var s = 0; s < stats.length; s++) {
-                            if (stats[s].name === statName) {
-                                value = stats[s].displayValue;
-                            }
-                        }
-                    }
-                }
+                var value = findStatValue(entry, wantedStatName);
                 rows += "<tr>";
                 rows += "<td>" + (i + 1) + "</td>";
                 rows += "<td>" + name + "</td>";
@@ -204,6 +214,29 @@ function fetchLeaders(sortKey, tableBody) {
         });
 }
 
+// Helper: search through an athlete entry for any stat by name
+function findStatValue(entry, statName) {
+    // Try flat stats array first
+    if (entry.stats) {
+        for (var i = 0; i < entry.stats.length; i++) {
+            if (entry.stats[i].name === statName) {
+                return entry.stats[i].displayValue || entry.stats[i].value || "-";
+            }
+        }
+    }
+    // Try nested categories
+    var categories = entry.categories || [];
+    for (var c = 0; c < categories.length; c++) {
+        var stats = categories[c].stats || [];
+        for (var s = 0; s < stats.length; s++) {
+            if (stats[s].name === statName) {
+                return stats[s].displayValue || stats[s].value || "-";
+            }
+        }
+    }
+    return "-";
+}
+
 // Fill team dropdowns
 function loadTeams() {
     var favDropdown = document.getElementById("fav-team");
@@ -214,6 +247,7 @@ function loadTeams() {
         .then(function (response) { return response.json(); })
         .then(function (data) {
             var teams = data.sports[0].leagues[0].teams;
+            console.log("loadTeams: got " + teams.length + " teams, favDropdown=" + !!favDropdown + ", teamA=" + !!teamADropdown + ", teamB=" + !!teamBDropdown);
             teams.sort(function (a, b) {
                 if (a.team.displayName < b.team.displayName) return -1;
                 if (a.team.displayName > b.team.displayName) return 1;
@@ -373,16 +407,16 @@ function setupPlayerCompare() {
                 document.getElementById("player-a-name").textContent = entryA.athlete.displayName;
                 document.getElementById("player-b-name").textContent = entryB.athlete.displayName;
                 var labels = [
-                    { label: "Points / Game", cat: "offensive", stat: "avgPoints" },
-                    { label: "Rebounds / Game", cat: "general", stat: "avgRebounds" },
-                    { label: "Assists / Game", cat: "offensive", stat: "avgAssists" },
-                    { label: "Steals / Game", cat: "defensive", stat: "avgSteals" },
-                    { label: "Blocks / Game", cat: "defensive", stat: "avgBlocks" }
+                    { label: "Points / Game", stat: "avgPoints" },
+                    { label: "Rebounds / Game", stat: "avgRebounds" },
+                    { label: "Assists / Game", stat: "avgAssists" },
+                    { label: "Steals / Game", stat: "avgSteals" },
+                    { label: "Blocks / Game", stat: "avgBlocks" }
                 ];
                 var rows = "";
                 for (var i = 0; i < labels.length; i++) {
-                    var aVal = getAthleteStat(entryA, labels[i].cat, labels[i].stat);
-                    var bVal = getAthleteStat(entryB, labels[i].cat, labels[i].stat);
+                    var aVal = findStatValue(entryA, labels[i].stat);
+                    var bVal = findStatValue(entryB, labels[i].stat);
                     rows += "<tr>";
                     rows += "<td>" + labels[i].label + "</td>";
                     rows += "<td>" + aVal + "</td>";
@@ -396,20 +430,6 @@ function setupPlayerCompare() {
                 body.innerHTML = '<tr><td colspan="3">Unable to load player data.</td></tr>';
             });
     });
-}
-
-// Helper: pull a stat displayValue from an athlete entry
-function getAthleteStat(entry, catName, statName) {
-    var categories = entry.categories || [];
-    for (var c = 0; c < categories.length; c++) {
-        if (categories[c].name === catName) {
-            var stats = categories[c].stats || [];
-            for (var s = 0; s < stats.length; s++) {
-                if (stats[s].name === statName) return stats[s].displayValue;
-            }
-        }
-    }
-    return "-";
 }
 
 // Signup form - home page
